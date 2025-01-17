@@ -3,14 +3,15 @@ import { openai } from "../config/openai";
 
 const router = Router();
 
-const generateText: RequestHandler = async (req, res) => {
+const generateText: RequestHandler = async (req, res, next): Promise<void> => {
   try {
     console.log("Otrzymano request:", req.body);
     const { prompt } = req.body;
 
     if (!prompt) {
       console.log("Brak promptu w requeście");
-      return res.status(400).json({ error: "Prompt is required" });
+      res.status(400).json({ error: "Prompt is required" });
+      return;
     }
 
     console.log("Wysyłam request do OpenAI z promptem:", prompt);
@@ -30,13 +31,7 @@ const generateText: RequestHandler = async (req, res) => {
       message: completion.choices[0].message.content,
     });
   } catch (error: any) {
-    console.error("OpenAI Error:", error);
-    console.error("Error stack:", error.stack);
-    res.status(500).json({
-      error: "Error generating text",
-      details: error.message,
-      stack: error.stack,
-    });
+    next(error);
   }
 };
 
