@@ -33,12 +33,14 @@ ${mapDescription.grid
 WAŻNE ZASADY:
 1. Jeśli w instrukcji pojawią się słowa takie jak "nie!", "czekaj!", "albo", "zacznijmy od nowa" - oznacza to, że dron wraca na pozycję startową (1,1) i wykonuje tylko instrukcje po tych słowach
 2. Zawsze bierz pod uwagę tylko ostateczną instrukcję po wszystkich "nie" i "czekaj"
-3. Odpowiedz TYLKO nazwą pola, na którym dron ostatecznie wylądował (maksymalnie dwa słowa)
+3. Słowa "maksymalnie", "do końca", "całkiem" w kontekście kierunku (np. "w prawo maksymalnie") oznaczają ruch do ostatniego pola w tym kierunku
+4. Odpowiedz TYLKO nazwą pola, na którym dron ostatecznie wylądował (maksymalnie dwa słowa)
 
 Przykłady:
-- "Lecimy w dół, albo nie! nie! W prawo do końca" -> "trawa" (bo po "nie!" lecimy tylko w prawo z pozycji startowej)
+- "Lecimy w dół, albo nie! nie! W prawo do końca" -> "dom" (bo po "nie!" lecimy w prawo do ostatniego pola)
 - "W prawo i w dół. Nie, czekaj! Tylko w dół." -> "góry" (bo po "czekaj!" lecimy tylko w dół z pozycji startowej)
-- "Dwa kroki w prawo... nie, nie, trzy kroki w prawo" -> "trawa" (bierzemy pod uwagę tylko instrukcję po "nie, nie")`;
+- "Maksymalnie w prawo" -> "dom" (lecimy do ostatniego pola w prawo)
+- "Do końca w dół" -> "góry" (lecimy do ostatniego pola w dół)`;
 
     const completion = await openai.chat.completions.create({
       messages: [
