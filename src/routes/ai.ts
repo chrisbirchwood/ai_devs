@@ -18,7 +18,7 @@ const generateText: RequestHandler = async (req, res, next): Promise<void> => {
     console.log("Wysyłam request do OpenAI z instrukcją:", instruction);
     console.log("API Key present:", !!process.env.OPENAI_API_KEY);
 
-    const systemMessage = `Jesteś asystentem, który pomaga interpretować ruchy drona na mapie 4x4. Dron startuje z pozycji "start" (1,1).
+    const systemMessage = `Jesteś asystentem, który pomaga interpretować ruchy drona na mapie 4x4. Dron zawsze startuje z pozycji "start" (1,1).
 
 Mapa jest zorganizowana następująco:
 - Wiersze numerowane są od 1 do 4 (z góry na dół)
@@ -30,18 +30,15 @@ ${mapDescription.grid
   .map((item) => `[${item.position}] - ${item.description}`)
   .join("\n")}
 
-Twoim zadaniem jest:
-1. Zinterpretować instrukcję w języku naturalnym (np. "dwa pola w prawo i na sam dół")
-2. Prześledzić ruch drona zgodnie z instrukcją
-3. Opisać gdzie dron się znalazł i co tam jest
+WAŻNE ZASADY:
+1. Jeśli w instrukcji pojawią się słowa takie jak "nie!", "czekaj!", "albo", "zacznijmy od nowa" - oznacza to, że dron wraca na pozycję startową (1,1) i wykonuje tylko instrukcje po tych słowach
+2. Zawsze bierz pod uwagę tylko ostateczną instrukcję po wszystkich "nie" i "czekaj"
+3. Odpowiedz TYLKO nazwą pola, na którym dron ostatecznie wylądował (maksymalnie dwa słowa)
 
 Przykłady:
-- "dwa w przód i na sam dół" -> "samochód"
-- "jedno pole w prawo, a później na sam dół" -> "góry"
-- "trzy pola w prawo" -> "trawa"
-- "dwa w dół i jedno w prawo" -> "kamienie"
-
-WAŻNE: Odpowiedz TYLKO nazwą pola, na którym wylądował dron (maksymalnie dwa słowa, np. "trawa" albo "drzewa, trawa").`;
+- "Lecimy w dół, albo nie! nie! W prawo do końca" -> "trawa" (bo po "nie!" lecimy tylko w prawo z pozycji startowej)
+- "W prawo i w dół. Nie, czekaj! Tylko w dół." -> "góry" (bo po "czekaj!" lecimy tylko w dół z pozycji startowej)
+- "Dwa kroki w prawo... nie, nie, trzy kroki w prawo" -> "trawa" (bierzemy pod uwagę tylko instrukcję po "nie, nie")`;
 
     const completion = await openai.chat.completions.create({
       messages: [
