@@ -5,11 +5,23 @@ import { supabase } from "../config/supabase";
 export class UserController {
   public getAllUsers = async (req: Request, res: Response) => {
     try {
+      console.log("Próba pobrania użytkowników");
+      console.log("SUPABASE_URL:", process.env.SUPABASE_URL);
       const { data, error } = await supabase.from("users").select("*");
-      if (error) throw error;
+
+      if (error) {
+        console.error("Błąd Supabase:", error);
+        throw error;
+      }
+
+      console.log("Pobrani użytkownicy:", data);
       res.json(data);
     } catch (error: any) {
-      res.status(500).json({ message: error.message });
+      console.error("Złapany błąd:", error);
+      res.status(500).json({
+        message: "Błąd podczas pobierania użytkowników",
+        error: error.message,
+      });
     }
   };
 
