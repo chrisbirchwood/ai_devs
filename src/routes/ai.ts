@@ -33,7 +33,7 @@ ${mapDescription.grid
 Twoim zadaniem jest:
 1. Zinterpretować instrukcję w języku naturalnym (np. "dwa pola w prawo i na sam dół")
 2. Prześledzić ruch drona zgodnie z instrukcją
-3. Opisać gdzie dron się znalazł
+3. Opisać gdzie dron się znalazł i co tam jest
 
 Przykłady:
 - "dwa w przód i na sam dół" -> "samochód"
@@ -57,7 +57,7 @@ WAŻNE: Odpowiedz TYLKO nazwą pola, na którym wylądował dron (maksymalnie dw
     );
 
     res.json({
-      message: completion.choices[0].message.content,
+      description: completion.choices[0].message.content,
     });
   } catch (error: any) {
     next(error);
