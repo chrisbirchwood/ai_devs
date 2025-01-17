@@ -6,19 +6,19 @@ const router = Router();
 const generateText: RequestHandler = async (req, res, next): Promise<void> => {
   try {
     console.log("Otrzymano request:", req.body);
-    const { prompt } = req.body;
+    const { instruction } = req.body;
 
-    if (!prompt) {
-      console.log("Brak promptu w requeście");
-      res.status(400).json({ error: "Prompt is required" });
+    if (!instruction) {
+      console.log("Brak instrukcji w requeście");
+      res.status(400).json({ error: "Instruction is required" });
       return;
     }
 
-    console.log("Wysyłam request do OpenAI z promptem:", prompt);
+    console.log("Wysyłam request do OpenAI z instrukcją:", instruction);
     console.log("API Key present:", !!process.env.OPENAI_API_KEY);
 
     const completion = await openai.chat.completions.create({
-      messages: [{ role: "user", content: prompt }],
+      messages: [{ role: "user", content: instruction }],
       model: "gpt-4o",
     });
 
