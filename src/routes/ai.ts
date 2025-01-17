@@ -18,7 +18,7 @@ const generateText: RequestHandler = async (req, res) => {
 
     const completion = await openai.chat.completions.create({
       messages: [{ role: "user", content: prompt }],
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o",
     });
 
     console.log(
