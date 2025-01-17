@@ -33,13 +33,15 @@ ${mapDescription.grid
 Twoim zadaniem jest:
 1. Zinterpretować instrukcję w języku naturalnym (np. "dwa pola w prawo i na sam dół")
 2. Prześledzić ruch drona zgodnie z instrukcją
-3. Opisać gdzie dron się znalazł i co tam jest
+3. Opisać gdzie dron się znalazł
 
 Przykłady:
-- "dwa w przód i na sam dół" -> dron leci z (1,1) dwa pola w prawo do (1,3), a potem w dół do (4,3), gdzie jest samochód
-- "jedno pole w prawo, a później na sam dół" -> dron leci z (1,1) jedno pole w prawo do (1,2), a potem w dół do (4,2), gdzie są góry
+- "dwa w przód i na sam dół" -> "samochód"
+- "jedno pole w prawo, a później na sam dół" -> "góry"
+- "trzy pola w prawo" -> "trawa"
+- "dwa w dół i jedno w prawo" -> "kamienie"
 
-Odpowiedz w formie: "Dron poleciał [opis ruchu] i wylądował na polu [opis pola]".`;
+WAŻNE: Odpowiedz TYLKO nazwą pola, na którym wylądował dron (maksymalnie dwa słowa, np. "trawa" albo "drzewa, trawa").`;
 
     const completion = await openai.chat.completions.create({
       messages: [
